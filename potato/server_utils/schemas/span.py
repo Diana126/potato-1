@@ -41,17 +41,12 @@ def get_span_color(span_label):
     Returns the color of a span with this label as a string with an RGB triple
     in parentheses, or None if the span is unmapped.
     """
-    if "ui" not in config or "spans" not in config["ui"]:
-        return None
-    span_ui = config["ui"]["spans"]
-
-    if "span_colors" not in span_ui:
-        return None
-
-    if span_label in span_ui["span_colors"]:
-        return span_ui["span_colors"][span_label]
-    else:
-        return None
+    return (
+        config.get("ui", {})
+            .get("spans", {})
+            .get("span_colors", {})
+            .get(span_label, None)
+    )
 
 
 def set_span_color(span_label, color):
@@ -60,27 +55,12 @@ def set_span_color(span_label, color):
 
     :color: a string containing an RGB triple in parentheses
     """
-    if "ui" not in config:
-        ui = {}
-        config["ui"] = ui
-    else:
-        ui = config["ui"]
-
-    if "spans" not in ui:
-        span_ui = {}
-        ui["spans"] = span_ui
-    else:
-        span_ui = ui["spans"]
-
-    if "span_colors" not in span_ui:
-        span_colors = {}
-        span_ui["span_colors"] = span_colors
-    else:
-        span_colors = span_ui["span_colors"]
-
-    span_colors[span_label] = color
-
-
+    (
+        config.setdefault("ui", {})
+            .setdefault("spans", {})
+            .setdefault("span_colors", {})
+    )[span_label] = color
+    
 def render_span_annotations(text, span_annotations):
     """    
     Retuns a modified version of the text with span annotation overlays inserted
@@ -116,6 +96,7 @@ def render_span_annotations(text, span_annotations):
         # Spans are colored according to their order in the list and we need to
         # retrofit the color
         color = get_span_color(a["annotation"])
+
         # The color is an RGB triple like (1,2,3) and we want the background for
         # the text to be somewhat transparent so we switch to RGBA for bg
         bg_color = color.replace(")", ",0.25)")
@@ -219,14 +200,16 @@ def generate_span_layout(annotation_scheme, horizontal=False):
             key2label[key_value] = label
             label2key[label] = key_value
             key_bindings.append((key_value, class_name + ": " + label))
-
-        label_category = annotation_scheme.get("label_category")
+        
         if "displaying_score" in annotation_scheme and annotation_scheme["displaying_score"]:
             label_content = label_data["key_value"] + "." + label
-        elif label_category:
-            label_content = label_category
         else:
             label_content = label
+
+        category_content = label_content
+        label_category = annotation_scheme.get("label_category")
+        if label_category:
+            category_content = label_category
 
         # Check the first radio
         if i == 1:
@@ -249,7 +232,7 @@ def generate_span_layout(annotation_scheme, horizontal=False):
         schematic += (
             '      <input class="{class_name}" for_span="{for_span}" type="checkbox" id="{name}" name="{name_with_span}" '
             + ' value="{key_value}" {is_checked} '
-            + "onclick=\"onlyOne(this); changeSpanLabel(this, '{label_content}', '{span_color}');\" validation=\"{validation}\">"
+            + "onclick=\"onlyOne(this); changeSpanLabel(this, '{category_content}', '{span_color}');\" validation=\"{validation}\">"
             + '  <label for="{name}" {tooltip}>'
             + '<span style="background-color:rgb{bg_color};">{label_content}</span></label>{br_label}'
         ).format(
@@ -265,6 +248,7 @@ def generate_span_layout(annotation_scheme, horizontal=False):
             name_with_span=name_with_span,
             bg_color=span_color.replace(")", ",0.25)"),
             span_color=span_color,
+            category_content=category_content,
         )
 
     # allow annotators to choose bad_text label

@@ -109,7 +109,7 @@
               if (sel.rangeCount && sel.toString().trim().length > 0) {                 
 
                   tsc = selectionColor.replace(")", ", 0.25)");
-                  
+
                   var span = document.createElement("span");
                   span.className = " span_container " + (checkbox.className || "");
                   span.setAttribute("selection_label", selectionLabel);
@@ -430,7 +430,7 @@
                     // bad_text label is selected
                     if (inputs[j].getAttribute("for_span") == "True"){
                         //alert($(".span_container").length);
-                        if ($(".span_container." + inputs.className).length > 0) {
+                        if ($(".span_container." + inputs[j].className).length > 0) {
                             checked_flag = true;
                             break;
                         } else if (inputs[j].name.slice(-8) == "bad_text" && inputs[j].checked == true){
