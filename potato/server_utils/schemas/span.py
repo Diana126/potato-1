@@ -220,8 +220,11 @@ def generate_span_layout(annotation_scheme, horizontal=False):
             label2key[label] = key_value
             key_bindings.append((key_value, class_name + ": " + label))
 
+        label_category = annotation_scheme.get("label_category")
         if "displaying_score" in annotation_scheme and annotation_scheme["displaying_score"]:
             label_content = label_data["key_value"] + "." + label
+        elif label_category:
+            label_content = label_category
         else:
             label_content = label
 
