@@ -41,9 +41,9 @@
 
     "user_config": {
 
-      "allow_all_users": False,
+      "allow_all_users": True,
       
-      "users": ["d.j.roytburg@emory.edu", "dimidusa@gmail.com"],
+      "users": [],
     },
 
     #list_as_text is used when the input text is actually a list of texts, usually used for best-worst-scaling or dialogue analysis
@@ -116,7 +116,12 @@
           "annotation_type": "highlight",
           "name": "entity_annotation",
           "description": "Highlight text and assign one or more labels.",
-          "labels": ["person", "resident", "organization", "date", "time", "location", "Agreement", "Opposition", "why YES", "why NO"],
+          "labels": ["Alternate uses", "Black identity", "20th century history", "Class",
+          "Consensus building/Interseccionality/solidarity", "Economic critiques", "Environmental",
+           "Impact on neighborhod", "History of StopCopCity", "Police",
+           "Specific police killings", "Current Atlanta politics", "Religious",
+           "World", "Visioning/worldbuilding", "Other", "For", "Against",
+           "Sacarsm", "Laughter", "Applause", "Shouting"],
           "sequential_key_binding": true,
         }
         #{
