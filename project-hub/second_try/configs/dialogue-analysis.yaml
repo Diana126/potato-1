@@ -41,9 +41,9 @@
 
     "user_config": {
 
-      "allow_all_users": True,
+      "allow_all_users": False,
       
-      "users": [ ],
+      "users": ["d.j.roytburg@emory.edu", "dimidusa@gmail.com"],
     },
 
     #list_as_text is used when the input text is actually a list of texts, usually used for best-worst-scaling or dialogue analysis
