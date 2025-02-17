@@ -113,7 +113,7 @@
 
     "annotation_schemes": [
         {
-          "annotation_type": "multiselect",
+          "annotation_type": "highlight",
           "name": "entity_annotation",
           "description": "Highlight text and assign one or more labels.",
           "labels": ["person", "resident", "organization", "date", "time", "location", "Agreement", "Opposition", "why YES", "why NO"],
